@@ -29,7 +29,7 @@ Similar to filter, the sort follows the standard Java `Comparator<Message>` inte
 A typical call reading mails with a certain subject `Request 12345` from the `inbox` and moving then to an `archive` after successfull handling would be created like this:
 
 ```java
-MessageIteraor it = MailsStoreService.messageIterator("ethereal-imaps", "INBOX", "archive", true, MailStoreService.subjectMatches(".*Request [0-9]+.*"), new MessageComparator())
+MessageIteraor it = MailsStoreService.messageIterator("etherealImaps", "INBOX", "archive", true, MailStoreService.subjectMatches(".*Request [0-9]+.*"), new MessageComparator())
 ```
 
 When you are finished handling an Email successfully, you should call the `handledMessage(boolean)` function, so the iterator will perform the configured action for this Email. Not calling this function or calling this function with `false` will leave the Email in the store and it will be delivered in the next run.
@@ -58,7 +58,7 @@ Additional convenience functions are provided to
 
 Configure one or more mailstores in global variables. A mailstore is identified by a name and a
 global variable section containing access information. The following example shows connection information
-for a mailstore that should be accessible under the name `ethereal-imaps`. Put this variable block into your
+for a mailstore that should be accessible under the name `etherealImaps`. Put this variable block into your
 project. At least `protocol`, `host`, `user` and `password` must be defined (note the encrypted `password`
 and the value list for `protocol` which will later provide some input support in the engine cockpit).
 
@@ -67,8 +67,8 @@ can set them in the `properties` section.
 
 ```yaml
 Variables:
-  mailstore-connector:
-    ethereal-imaps:
+  mailstoreConnector:
+    etherealImaps:
       # [enum: pop3, pop3s, imap, imaps]
       protocol: 'imaps'
       # Host for store connection
@@ -132,8 +132,8 @@ Include your Azure credentials in the authentication configuration.
 Ensure that a fully configured YAML file is available for the application.
 ```yaml
 Variables:
-  mailstore-connector:
-    localhost-imap-azure-oauth2-authentication:
+  mailstoreConnector:
+    localhostImapAzureOauth2Authentication:
       # [enum: pop3, pop3s, imap, imaps]
       protocol: 'imap'
       # Host for store connection
@@ -178,6 +178,8 @@ Variables:
   azureOAuth:
     loginUrl: 'login.microsoftonline.com'
 ```
+> [!NOTE]
+> The variable path `mailstore-connector` is renamed to `mailstoreConnector` from 13.
 
 4. Set Up the Authentication Provider
 Before calling the mailstore connector, you need to provide an authentication provider.

@@ -49,7 +49,7 @@ import ch.ivyteam.log.Logger;
 public class MailStoreService {
 	private static final MailStoreService INSTANCE = new MailStoreService();
 	private static final Logger LOG = Ivy.log();
-	private static final String MAIL_STORE_VAR = "mailstore-connector";
+	private static final String MAIL_STORE_VAR = "mailstoreConnector";
 	private static final String PROTOCOL_VAR = "protocol";
 	private static final String HOST_VAR = "host";
 	private static final String PORT_VAR = "port";

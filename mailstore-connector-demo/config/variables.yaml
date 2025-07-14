@@ -1,25 +1,25 @@
-# yaml-language-server: $schema=https://json-schema.axonivy.com/app/12.0.0/variables.json
+# yaml-language-server: $schema=https://json-schema.axonivy.com/app/13.1.0/variables.json
 # == Variables ==
-# 
+#
 # You can define here your project Variables.
 # If you want to define/override a Variable for a specific Environment, 
 # add an additional ‘variables.yaml’ file in a subdirectory in the ‘Config’ folder: 
 # '<project>/Config/_<environment>/variables.yaml
 #
 Variables:
-  mailstore-connector:
-    localhost-imap:
+  mailstoreConnector:
+    localhostImap:
       # [enum: pop3, pop3s, imap, imaps]
-      protocol: 'imap'
+      protocol: imap
       # Host for store connection
-      host: 'localhost'
+      host: localhost
       # Port for store connection (only needed if not default)
-      port: -1
+      port: "-1"
       # User name for store connection
-      user: 'debug@localdomain.test'
+      user: debug@localdomain.test
       # Password for store connection
-      # [password]
-      password: 'pass'
+      #[password]
+      password: ${decrypt:XZqAi7eMCFxdtNs1TPnCWA==}
       # show debug output for connection
       debug: true
       # Additional properties for store connection,
@@ -29,42 +29,39 @@ Variables:
           imaps:
             ssl:
               checkserveridentity: false
-              trust: '*'
+              trust: "*"
       # only set below credential when you go with oauth2
       # mail.imaps.auth.mechanisms: 'XOAUTH2'
       # mail.imaps.sasl.enable: 'true'
       # mail.imaps.sasl.mechanisms: 'XOAUTH2'
 
-            # com.axonivy.connector.oauth.BasicUserPasswordProvider for Basic Authentication
+      # com.axonivy.connector.oauth.BasicUserPasswordProvider for Basic Authentication
       # com.axonivy.connector.oauth.AzureOauth2UserPasswordProvider for AzureOauth2UserPasswordProvider
-      userPasswordProvider: ''
-      
+      userPasswordProvider: ""
       # only set below credential when you go with oauth2
       # tenant to use for OAUTH2 request.
       # set the Azure Directory (tenant) ID, for application requests.
-      tenantId: ''
+      tenantId: ""
       # Your Azure Application (client) ID, used for OAuth2 authentication
-      appId: ''
+      appId: ""
       # Secret key from your applications "certificates & secrets" (client secret)
-      secretKey: ''
+      secretKey: ""
       # for client_credentials: https://outlook.office365.com/.default
-      scope: ''
+      scope: ""
       #[client_credentials]
-      grantType: ''
-    
-    
-    localhost-imap-basic-authentication:
+      grantType: ""
+    localhostImapBasicAuthentication:
       # [enum: pop3, pop3s, imap, imaps]
-      protocol: 'imap'
+      protocol: imap
       # Host for store connection
-      host: 'localhost'
+      host: localhost
       # Port for store connection (only needed if not default)
-      port: -1
+      port: "-1"
       # User name for store connection
-      user: 'debug@localdomain.test'
+      user: debug@localdomain.test
       # Password for store connection
-      # [password]
-      password: 'pass'
+      #[password]
+      password: ${decrypt:XZqAi7eMCFxdtNs1TPnCWA==}
       # show debug output for connection
       debug: true
       # Additional properties for store connection,
@@ -74,23 +71,20 @@ Variables:
           imaps:
             ssl:
               checkserveridentity: false
-              trust: '*'
-      
-      userPasswordProvider: 'com.axonivy.connector.oauth.BasicUserPasswordProvider'
-    
-    
-    localhost-imap-azure-oauth2-authentication:
+              trust: "*"
+      userPasswordProvider: com.axonivy.connector.oauth.BasicUserPasswordProvider
+    localhostImapAzureOauth2Authentication:
       # [enum: pop3, pop3s, imap, imaps]
-      protocol: 'imap'
+      protocol: imap
       # Host for store connection
-      host: 'localhost'
+      host: localhost
       # Port for store connection (only needed if not default)
-      port: -1
+      port: "-1"
       # User name for store connection
-      user: 'debug@localdomain.test'
+      user: debug@localdomain.test
       # Password for store connection
-      # [password]
-      password: ''
+      #[password]
+      password: ${decrypt:}
       # show debug output for connection
       debug: true
       # Additional properties for store connection,
@@ -100,29 +94,26 @@ Variables:
           imaps:
             ssl:
               checkserveridentity: false
-              trust: '*'
+              trust: "*"
             auth:
               # only set below credential when you go with oauth2
-              mechanisms: 'XOAUTH2'
+              mechanisms: XOAUTH2
             sasl:
-              enable: 'true'
-              mechanisms: 'XOAUTH2'
-      
-      userPasswordProvider: 'com.axonivy.connector.oauth.AzureOauth2UserPasswordProvider'
-      
+              enable: true
+              mechanisms: XOAUTH2
+      userPasswordProvider: com.axonivy.connector.oauth.AzureOauth2UserPasswordProvider
       # only set below credential when you go with oauth2
       # tenant to use for OAUTH2 request.
       # set the Azure Directory (tenant) ID, for application requests.
-      tenantId: ''
+      tenantId: ""
       # Your Azure Application (client) ID, used for OAuth2 authentication
-      appId: ''
+      appId: ""
       # Secret key from your applications "certificates & secrets" (client secret)
-      secretKey: ''
+      secretKey: ""
       # for client_credentials/password: https://outlook.office365.com/.default
-      scope: ''
+      scope: ""
       #[client_credentials, password]
-      grantType: ''
+      grantType: ""
   # login microsoft azure
   azureOAuth:
-    loginUrl: 'login.microsoftonline.com'
-
+    loginUrl: login.microsoftonline.com

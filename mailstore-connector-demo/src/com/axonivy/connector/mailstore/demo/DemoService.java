@@ -24,9 +24,9 @@ public class DemoService {
 	private static final Logger LOG = Ivy.log();
 	private static final String INBOX = "INBOX";
 	private static final String USER_PASSWORD_PROVIDER = "userPasswordProvider";
-	private static final String LOCALHOST_IMAP = "localhost-imap";
-	private static final String LOCALHOST_IMAP_BASIC_AUTHENTICATION = "localhost-imap-basic-authentication";
-	private static final String LOCALHOST_IMAP_AZURE_OAUTH2_AUTHENTICATION = "localhost-imap-azure-oauth2-authentication";
+	private static final String LOCALHOST_IMAP = "localhostImap";
+	private static final String LOCALHOST_IMAP_BASIC_AUTHENTICATION = "localhostImapBasicAuthentication";
+	private static final String LOCALHOST_IMAP_AZURE_OAUTH2_AUTHENTICATION = "localhostImapAzureOauth2Authentication";
 
 	public static void handleMessages() throws MessagingException, IOException {
 		MessageIterator iterator = MailStoreService.messageIterator(LOCALHOST_IMAP, INBOX, null, false, MailStoreService.subjectMatches(".*test [0-9]+.*"), new MessageComparator());
@@ -70,7 +70,7 @@ public class DemoService {
 	}
 	
 	public static void connectMailStoreWithBasicAuth() throws MessagingException, IOException {
-		// get from variable mailstore-connector.localhost-imap.userPasswordProvider
+		// get from variable mailstoreConnector.localhostImap.userPasswordProvider
 		String authProviderPath = MailStoreService.getVar(LOCALHOST_IMAP_BASIC_AUTHENTICATION, USER_PASSWORD_PROVIDER);
 		initAuthProvider(LOCALHOST_IMAP_BASIC_AUTHENTICATION, authProviderPath);
 		
@@ -84,7 +84,7 @@ public class DemoService {
 	}
 	
 	public static void connectMailStoreWithAzureOauth2() throws MessagingException, IOException {
-		// get from variable mailstore-connector.localhost-imap.userPasswordProvider
+		// get from variable mailstoreConnector.localhostImap.userPasswordProvider
 		String authProviderPath = MailStoreService.getVar(LOCALHOST_IMAP_AZURE_OAUTH2_AUTHENTICATION, USER_PASSWORD_PROVIDER);
 		initAuthProvider(LOCALHOST_IMAP_AZURE_OAUTH2_AUTHENTICATION, authProviderPath);
 		

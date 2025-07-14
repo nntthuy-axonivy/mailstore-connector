@@ -1,5 +1,5 @@
 {
-  "$schema" : "https://json-schema.axonivy.com/process/12.0.0/process.json",
+  "$schema" : "https://json-schema.axonivy.com/process/13.1.2/process.json",
   "id" : "183EF4C4DA38CCD9",
   "config" : {
     "data" : "com.axonivy.connector.mailstore.demo.Data"
@@ -31,7 +31,7 @@
         "processCall" : "MailStoreConnector:handleMessages(String,String,String,Boolean,java.util.function.Predicate,java.util.Comparator)",
         "call" : {
           "map" : {
-            "param.storeName" : "\"localhost-imap\"",
+            "param.storeName" : "\"localhostImap\"",
             "param.srcFolder" : "\"INBOX\"",
             "param.dstFolder" : "null",
             "param.delete" : "false",
