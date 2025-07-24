@@ -10,11 +10,37 @@ Please be aware that the comprehensive feature set is exclusively accessible thr
 
 ## Demo
 
-Two demo processes are provided, which do the same thing once in an Ivy sub-process and once directly in a Java service function if you prefer. Both read from an IMAP inbox (for testing you can use a docker image like [virtua-sa/docker-mail-devel](https://github.com/virtua-sa/docker-mail-devel) or a public IMAP service like [Ethereal](https://ethereal.email/) and any IMAP mail client like [Thunderbird](https://www.thunderbird.net/de/).
+Two demo processes are provided:
 
-The demo will read from the standard inbox messages containing the text `Test 999...` where 999 is a number. For every message it will save the message to a case document, extract all image parts and logs some information about them. So to see results, you should prepare such mails in the inbox. Messaages will not be deleted or moved to simplify testing.
+- One implemented as an **Ivy sub-process**
+- One implemented as a **Java service function**
 
-Results will only be written to the Ivy logfile. In a later version, there will be perhaps a little GUI for this. Stay tuned!
+> Both perform the same task – choose whichever integration style fits your needs.
+
+Both demos connect to an **IMAP inbox**.
+
+For testing purposes, you can use:
+
+- A Docker container such as [`virtua-sa/docker-mail-devel`](https://github.com/virtua-sa/docker-mail-devel)
+- A public IMAP testing service like [Ethereal](https://ethereal.email/)
+- Any IMAP-capable client such as [Thunderbird](https://www.thunderbird.net/de/)
+
+The demo reads messages from the standard inbox that contain the text: `Test 999` (where `999` is any number).
+
+For each matching message, it:
+
+- Saves the message as a **case document**
+- Extracts all **image parts**
+- Logs relevant metadata to the **Ivy log**
+
+> To test it, prepare such messages in the inbox.  
+> Messages are **not deleted or moved**, to keep testing repeatable and safe.
+
+### 📝 Output & Outlook
+
+- All output is written to the **Ivy log**.
+- A simple GUI might be added in a future version — stay tuned!
+
 
 ## Usage
 
