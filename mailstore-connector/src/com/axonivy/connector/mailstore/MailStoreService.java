@@ -38,7 +38,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.axonivy.connector.mailstore.enums.MailMovingMethod;
 import com.axonivy.connector.mailstore.provider.BasicUserPasswordProvider;
 import com.axonivy.connector.mailstore.provider.UserPasswordProvider;
-import com.axonivy.connector.oauth.ssl.SSLContextConfigure;
 
 import ch.ivyteam.ivy.bpm.error.BpmError;
 import ch.ivyteam.ivy.bpm.error.BpmPublicErrorBuilder;
@@ -48,13 +47,12 @@ import ch.ivyteam.log.Logger;
 
 public class MailStoreService {
 	private static final MailStoreService INSTANCE = new MailStoreService();
-	private static final Logger LOG = Ivy.log();
-	private static final String MAIL_STORE_VAR = "mailstoreConnector";
+	static final Logger LOG = Ivy.log();
+	static final String MAIL_STORE_VAR = "mailstoreConnector";
 	private static final String PROTOCOL_VAR = "protocol";
 	private static final String HOST_VAR = "host";
 	private static final String PORT_VAR = "port";
 	private static final String DEBUG_VAR = "debug";
-	private static final String PROPERTIES_VAR = "properties";
 	private static final String MOVING_METHOD_VAR = "movingMethod";
 	private static final String ERROR_BASE = "mailstore:connector";
 	private static final Address[] EMPTY_ADDRESSES = new Address[0];
@@ -600,7 +598,7 @@ public class MailStoreService {
 	 */
 	public static Message loadMessage(InputStream stream) {
 		try {
-			return new MimeMessage(getSession(), stream);
+			return new MimeMessage(MailSessionProvider.getSession(), stream);
 		} catch (MessagingException e) {
 			throw buildError("load").withCause(e).build();
 		}
@@ -644,7 +642,7 @@ public class MailStoreService {
 		boolean debug = true;
 
 		try {
-			Session session = getSession(storeName);
+			Session session = MailSessionProvider.getSession(storeName);
 
 			debug = Boolean.parseBoolean(debugString);
 			int port = Integer.parseInt(portString);
@@ -673,23 +671,6 @@ public class MailStoreService {
 		return store;
 	}
 
-	private static Session getSession(String storeName) throws Exception {
-		Properties properties = getProperties(storeName);
-		if (SSLContextConfigure.get().isStartTLSEnabled(properties)) {
-			SSLContextConfigure.get().addIvyTrustStoreToCurrentContext();
-		}
-
-		// Use getInstance instead of getDefaultInstance
-		Session session = Session.getInstance(properties, null);
-		return session;
-	}
-	
-	private static Session getSession() {
-		Properties properties = getProperties();
-		Session session = Session.getDefaultInstance(properties, null);
-		return session;
-	}
-
 	private static Folder openFolder(Store store, String folderName, int mode) throws MessagingException {
 		LOG.debug("Opening folder {0}", folderName);
 		Folder folder = store.getFolder(folderName);
@@ -707,50 +688,9 @@ public class MailStoreService {
 
 		return folder;
 	}
-
+	
 	public static String getVar(String store, String var) {
 		return Ivy.var().get(String.format("%s.%s.%s", MAIL_STORE_VAR, store, var));
-	}
-	
-	private static Properties getProperties() {
-		Properties properties = System.getProperties();
-
-		String propertiesPrefix = PROPERTIES_VAR + ".";
-		for (Variable variable : Ivy.var().all()) {
-			String name = variable.name();
-			if (name.startsWith(propertiesPrefix)) {
-				String propertyName = name.substring(propertiesPrefix.length());
-				String value = variable.value();
-				LOG.info("Setting additional property {0}: ''{1}''", propertyName, value);
-				properties.setProperty(name, value);
-			}
-		}
-
-		return properties;
-	}
-
-	// Only retrieve properties from the store that belong to
-	private static Properties getProperties(String storeName) {
-		Properties properties = new Properties();
-		String propertiesPrefix = String.format("%s.%s.%s.", MAIL_STORE_VAR, storeName, PROPERTIES_VAR);
-
-		for (Variable variable : Ivy.var().all()) {
-			String name = variable.name();
-			if (name.contains(propertiesPrefix)) {
-				String propertyName = getSubstringAfterProperties(name);
-				String value = variable.value();
-				LOG.info("Setting additional property {0}: ''{1}''", propertyName, value);
-				properties.setProperty(propertyName, value);
-			}
-		}
-
-		return properties;
-	}
-	
-	private static String getSubstringAfterProperties(String input) {
-		int index = input.indexOf(PROPERTIES_VAR);
-		
-		return index != -1 ? input.substring(index + PROPERTIES_VAR.length() + 1) : null;
 	}
 
 	public static BpmPublicErrorBuilder buildError(String code) {
