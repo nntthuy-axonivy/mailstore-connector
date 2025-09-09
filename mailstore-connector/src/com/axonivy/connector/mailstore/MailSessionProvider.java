@@ -20,20 +20,37 @@ public class MailSessionProvider {
 
 	private static final String PROPERTIES_VAR = "properties";
 
+	
+	/**
+	 * https://eclipse-ee4j.github.io/angus-mail/docs/api/org.eclipse.angus.mail/org/eclipse/angus/mail/imap/package-summary.html
+	 */
 	private interface Property {
-		String MAIL_SMTP_SSL_SOCKET_FACTORY = "mail.smtp.ssl.socketFactory";
-		String MAIL_SMTP_SSL_SOCKET_FACTORY_FALLBACK = "mail.smtp.ssl.socketFactory.fallback";
+		
+		public interface SMTP {
+			String SSL_SOCKET_FACTORY = "mail.smtp.ssl.socketFactory";
+			String SSL_SOCKET_FACTORY_FALLBACK = "mail.smtp.ssl.socketFactory.fallback";
+		}
+		public interface IMAP {
+			String SSL_SOCKET_FACTORY = "mail.imap.socketFactory";
+			String SSL_SOCKET_FACTORY_FALLBACK = "mail.imap.socketFactory.fallback";
+			String SSL_ENABLED= "mail.imap.ssl.enable";
+		}
 	}
 
 	static Session getSession(String storeName) throws Exception {
 		Properties properties = getProperties(storeName);
-		if (isStartTLSEnabled(properties)) {
-			properties.put(Property.MAIL_SMTP_SSL_SOCKET_FACTORY, ivySslContext());
-			// ensures that socket will only be created with our socket factory otherwise it
-			// will fail
-			properties.setProperty(Property.MAIL_SMTP_SSL_SOCKET_FACTORY_FALLBACK, "false");
+		boolean tlsEnabled = isStartTLSEnabled(properties);
+		if (tlsEnabled) {
+			properties.put(Property.SMTP.SSL_SOCKET_FACTORY, ivySslContext());
+			// ensures that socket will only be created with our socket factory otherwise it will fail
+			properties.setProperty(Property.SMTP.SSL_SOCKET_FACTORY_FALLBACK, "false");
 		}
-
+		boolean imapSsl = BooleanUtils.toBoolean(properties.getProperty(Property.IMAP.SSL_ENABLED));
+		if (imapSsl) {
+			Ivy.log().info("enabling imap SSL context");
+			properties.put(Property.IMAP.SSL_SOCKET_FACTORY, ivySslContext());
+			properties.put(Property.IMAP.SSL_SOCKET_FACTORY_FALLBACK, "false");
+		}
 		return Session.getInstance(properties, null);
 	}
 
@@ -41,8 +58,10 @@ public class MailSessionProvider {
 		if (properties == null) {
 			return false;
 		}
-		return BooleanUtils.toBoolean(properties.getProperty(StartTLS.ENABLE.getProperty()))
-				|| BooleanUtils.toBoolean(properties.getProperty(StartTLS.REQUIRED.getProperty()));
+		String enableRaw = properties.getProperty(StartTLS.ENABLE.getProperty());
+		boolean enable = BooleanUtils.toBoolean(enableRaw);
+		boolean required = BooleanUtils.toBoolean(properties.getProperty(StartTLS.REQUIRED.getProperty()));
+		return enable || required;
 	}
 
 	private static IvySslSocketFactory ivySslContext() {
