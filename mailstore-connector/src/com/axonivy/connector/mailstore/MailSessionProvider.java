@@ -31,9 +31,11 @@ public class MailSessionProvider {
 			String SSL_SOCKET_FACTORY_FALLBACK = "mail.smtp.ssl.socketFactory.fallback";
 		}
 		public interface IMAP {
-			String SSL_SOCKET_FACTORY = "mail.imap.socketFactory";
-			String SSL_SOCKET_FACTORY_FALLBACK = "mail.imap.socketFactory.fallback";
 			String SSL_ENABLED= "mail.imap.ssl.enable";
+			String SSL_SOCKET_FACTORY = "mail.imap.ssl.socketFactory";
+			String SOCKET_FACTORY = "mail.imap.socketFactory";
+			String SOCKET_FACTORY_FALLBACK = "mail.imap.socketFactory.fallback";
+			
 		}
 	}
 
@@ -49,8 +51,9 @@ public class MailSessionProvider {
 		if (imapSsl) {
 			Ivy.log().info("enabling imap SSL context");
 			properties.put(Property.IMAP.SSL_SOCKET_FACTORY, ivySslContext());
-			properties.put(Property.IMAP.SSL_SOCKET_FACTORY_FALLBACK, "false");
+			properties.put(Property.IMAP.SOCKET_FACTORY_FALLBACK, "false");
 		}
+		properties.put(Property.IMAP.SOCKET_FACTORY, ivySslContext());
 		return Session.getInstance(properties, null);
 	}
 
