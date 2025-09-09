@@ -51,7 +51,7 @@ services:
       #- ServerOptions__NumberOfSessionsToKeep=100
 
       #Specifies the TLS mode to use. None=Off. StartTls=On demand if client supports STARTTLS. ImplicitTls=TLS as soon as connection is established.
-      - ServerOptions__TlsMode=ImplicitTls
+      - ServerOptions__TlsMode=StartTls
 
       #Specifies the TLS certificate to use if TLS is enabled/requested. Specify "" to use an auto-generated self-signed certificate (then see console output on first startup)
       #- ServerOptions__TlsCertificate=
