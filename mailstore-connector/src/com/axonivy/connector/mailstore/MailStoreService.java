@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Properties;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -42,7 +41,6 @@ import com.axonivy.connector.mailstore.provider.UserPasswordProvider;
 import ch.ivyteam.ivy.bpm.error.BpmError;
 import ch.ivyteam.ivy.bpm.error.BpmPublicErrorBuilder;
 import ch.ivyteam.ivy.environment.Ivy;
-import ch.ivyteam.ivy.vars.Variable;
 import ch.ivyteam.log.Logger;
 
 public class MailStoreService {
@@ -384,7 +382,7 @@ public class MailStoreService {
 		private Message[] messages;
 		private int nextIndex;
 		private ClassLoader originalClassLoader;
-		private Map<String, Folder> dstFolderMap;
+		private Map<String, Folder> dstFolderMap= new LinkedHashMap<>();;
 		private MailMovingMethod mailMovingMethod;
 
 		private MessageIterator(String storeName, String srcFolderName, List<String> dstFolderNames, boolean delete,
@@ -402,7 +400,6 @@ public class MailStoreService {
 				mailMovingMethod = MailMovingMethod.from(getVar(storeName, MOVING_METHOD_VAR));
 				
 				if(CollectionUtils.isNotEmpty(dstFolderNames)) {
-					dstFolderMap = new LinkedHashMap<>();
 					for(String dstFolderName : dstFolderNames) {
 						if(StringUtils.isNotBlank(dstFolderName)) {
 							dstFolderMap.put(dstFolderName, MailStoreService.openFolder(store, dstFolderName, Folder.READ_WRITE));
