@@ -1,0 +1,37 @@
+services:
+  mailserver:
+    image: mailserver/docker-mailserver:latest
+    container_name: mailserver
+    hostname: mail
+    domainname: marketplace.server.ivy-cloud.com
+    env_file: mailserver.env 
+    ports:
+      - "25:25"     # SMTP
+      - "587:587"   # Submission
+      - "143:143"   # IMAP
+      - "993:993"   # IMAPS
+    volumes:
+      - maildata:/var/mail          # Docker volume for mail data
+      - mailstate:/var/mail-state   # Docker volume for mail state
+      - ./config/:/tmp/docker-mailserver/ # Bind mount for configuration
+      - ./config/ssl/mail.crt:/etc/ssl/certs/mailserver.pem:ro
+      - ./config/ssl/mail.key:/etc/ssl/private/mailserver.key:ro
+    environment:
+      - ENABLE_SPAMASSASSIN=0
+      - ENABLE_CLAMAV=0
+      - ENABLE_FAIL2BAN=0
+      - ENABLE_POSTGREY=0
+      - ENABLE_MANAGESIEVE=0
+      - ONE_DIR=1
+      - DMS_DEBUG=0
+        #- SSL_TYPE=manual             # Use manual SSL
+        #- SSL_CERT_PATH=/tmp/docker-mailserver/ssl/mail.localhost.crt
+        #- SSL_KEY_PATH=/tmp/docker-mailserver/ssl/mail.localhost.key
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    restart: unless-stopped
+
+volumes:
+  maildata:
+  mailstate:
