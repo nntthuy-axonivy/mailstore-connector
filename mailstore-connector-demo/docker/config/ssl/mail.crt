@@ -1,0 +1,23 @@
+# Dear Bug Hunter,
+# This credential is intentionally included for educational purposes only and does not provide access to any production systems.
+# Please do not submit it as part of our bug bounty program.
+-----BEGIN CERTIFICATE-----
+MIIDQTCCAimgAwIBAgIUA5EKJQN4z+rpyZgF7BRNaTVMLjUwDQYJKoZIhvcNAQEL
+BQAwMDEuMCwGA1UEAwwlbWFpbC5tYXJrZXRwbGFjZS5zZXJ2ZXIuaXZ5LWNsb3Vk
+LmNvbTAeFw0yNTA5MDkwNDE3MzFaFw0yNjA5MDkwNDE3MzFaMDAxLjAsBgNVBAMM
+JW1haWwubWFya2V0cGxhY2Uuc2VydmVyLml2eS1jbG91ZC5jb20wggEiMA0GCSqG
+SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDn9t+niCl3QqAUl0OS4eEd4r2NAUD5UzZx
+/s8qtpcp4wbPlQaD5/Af6DxE7cTtU4qPeNg+ZUwUZPiP8reVyt5WuvFkNI7vBLBY
+dSfVHa1GqW2Uy6hDHuExguACKfjrttjr8Ek2EA/8LlL2STMa2hYe50o4Zexg1djr
+hw3nJRGhU4iSuzm2x5R48Zyu8fq+8+hkcptG79EA52IWedUjB6ZkUBrWRBMXTRH3
+Yp6Br+rFlnq/JSp/As9wUGgE/47VQqm7bIfOnpg4eiV0cA3J8JEb+tQcK9dhg6Xa
+Yu+Whxngx4SYu1jPwq6yMjILPH8gXaMqaQiCOYofYLBkDAWl677FAgMBAAGjUzBR
+MB0GA1UdDgQWBBSlVnQmESPql2TGv6v+A8ZOHboksDAfBgNVHSMEGDAWgBSlVnQm
+ESPql2TGv6v+A8ZOHboksDAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUA
+A4IBAQCVzZPW/9LxfrsvWEZHbKJNvsFh36R75yNZdKx6lkltAwyW2J5+LhpnP/8C
+H5ennDoRFdFi924+cvBafCWIumq+7CgXG3uWw+eptJKes1Mhr0D1GhnmMHTL7U58
+GSpJdbydstP94Ea51m/9IvQ0FqO2GvGCDebuuJeWNY8qlh0o3IQbWYMqUGnoYZxx
+XQ4doROrF1ba7/OxSeq6pgFu8xBgPets+7wsRcO7FfCefwP6/rci/GnLYEbi+ePx
+/oRuoo5ej4PY9nVgyO+iBIgprETH/RfgpKJWynyNDuwsbgkI75X420rLiLkmJstE
+eVfZZ6BBkw4pf4nstx5phhA9C4O/
+-----END CERTIFICATE-----
