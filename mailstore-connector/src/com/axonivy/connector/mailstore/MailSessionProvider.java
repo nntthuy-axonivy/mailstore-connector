@@ -5,6 +5,7 @@ import static com.axonivy.connector.mailstore.MailStoreService.LOG;
 import java.util.Properties;
 
 import javax.mail.Session;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.apache.commons.lang3.BooleanUtils;
 
@@ -20,7 +21,6 @@ public class MailSessionProvider {
 
 	private static final String PROPERTIES_VAR = "properties";
 
-	
 	/**
 	 * https://eclipse-ee4j.github.io/angus-mail/docs/api/org.eclipse.angus.mail/org/eclipse/angus/mail/imap/package-summary.html
 	 */
@@ -41,20 +41,25 @@ public class MailSessionProvider {
 
 	static Session getSession(String storeName) throws Exception {
 		Properties properties = getProperties(storeName);
+		enrichSslContext(properties);
+		return Session.getInstance(properties, null);
+	}
+
+	private static void enrichSslContext(Properties properties) {
+		var socketFactory = ivySslContext();
 		boolean tlsEnabled = isStartTLSEnabled(properties);
 		if (tlsEnabled) {
-			properties.put(Property.SMTP.SSL_SOCKET_FACTORY, ivySslContext());
+			properties.put(Property.SMTP.SSL_SOCKET_FACTORY, socketFactory);
 			// ensures that socket will only be created with our socket factory otherwise it will fail
 			properties.setProperty(Property.SMTP.SSL_SOCKET_FACTORY_FALLBACK, "false");
 		}
 		boolean imapSsl = BooleanUtils.toBoolean(properties.getProperty(Property.IMAP.SSL_ENABLED));
 		if (imapSsl) {
 			Ivy.log().info("enabling imap SSL context");
-			properties.put(Property.IMAP.SSL_SOCKET_FACTORY, ivySslContext());
+			properties.put(Property.IMAP.SSL_SOCKET_FACTORY, socketFactory);
 			properties.put(Property.IMAP.SOCKET_FACTORY_FALLBACK, "false");
 		}
 		properties.put(Property.IMAP.SOCKET_FACTORY, ivySslContext());
-		return Session.getInstance(properties, null);
 	}
 
 	private static boolean isStartTLSEnabled(Properties properties) {
@@ -67,8 +72,10 @@ public class MailSessionProvider {
 		return enable || required;
 	}
 
-	private static IvySslSocketFactory ivySslContext() {
-		return new IvySslSocketFactory(new SslConfig(false, "noAlias", SslClientSettings.instance()));
+	private static SSLSocketFactory ivySslContext() {
+		SslClientSettings settings = SslClientSettings.instance();
+		LOG.debug("using truststore file:"+settings.getTrustStore().getFile());
+		return new IvySslSocketFactory(new SslConfig(false, "noAlias", settings));
 	}
 
 	static Session getSession() {
