@@ -19,16 +19,26 @@ Variables:
       user: debug@localdomain.test
       # Password for store connection
       #[password]
-      password: ${decrypt:XZqAi7eMCFxdtNs1TPnCWA==}
+      password: ${decrypt:}
       # show debug output for connection
       debug: true
       # Additional properties for store connection,
       # see https://javaee.github.io/javamail/docs/api/com/sun/mail/imap/package-summary.html
       properties:
         mail:
+          smtp:
+            ssl:
+              enable: true
+            starttls:
+              enable: true
+          imap:
+            ssl:
+              enable: true
+              required: true
+            auth: false
           imaps:
             ssl:
-              checkserveridentity: false
+              checkserveridentity: true
               trust: "*"
       # only set below credential when you go with oauth2
       # mail.imaps.auth.mechanisms: 'XOAUTH2'
@@ -48,32 +58,8 @@ Variables:
       secretKey: ""
       # for client_credentials: https://outlook.office365.com/.default
       scope: ""
-      #[client_credentials]
       grantType: ""
     localhostImapBasicAuthentication:
-      # [enum: pop3, pop3s, imap, imaps]
-      protocol: imap
-      # Host for store connection
-      host: localhost
-      # Port for store connection (only needed if not default)
-      port: "-1"
-      # User name for store connection
-      user: debug@localdomain.test
-      # Password for store connection
-      #[password]
-      password: ${decrypt:XZqAi7eMCFxdtNs1TPnCWA==}
-      # show debug output for connection
-      debug: true
-      # Additional properties for store connection,
-      # see https://javaee.github.io/javamail/docs/api/com/sun/mail/imap/package-summary.html
-      properties:
-        mail:
-          imaps:
-            ssl:
-              checkserveridentity: false
-              trust: "*"
-      userPasswordProvider: com.axonivy.connector.oauth.BasicUserPasswordProvider
-    localhostImapAzureOauth2Authentication:
       # [enum: pop3, pop3s, imap, imaps]
       protocol: imap
       # Host for store connection
@@ -91,15 +77,47 @@ Variables:
       # see https://javaee.github.io/javamail/docs/api/com/sun/mail/imap/package-summary.html
       properties:
         mail:
+          smtp:
+            ssl:
+              enable: "true"
+            starttls:
+              enable: "true"
+          imap:
+            starttls:
+              enable: "true"
+              required: "true"
           imaps:
             ssl:
-              checkserveridentity: false
+              checkserveridentity: "true"
+              #trust: "*"
+      userPasswordProvider: com.axonivy.connector.oauth.BasicUserPasswordProvider
+    localhostImapAzureOauth2Authentication:
+      # [enum: pop3, pop3s, imap, imaps]
+      protocol: imap
+      # Host for store connection
+      host: localhost
+      # Port for store connection (only needed if not default)
+      port: "-1"
+      # User name for store connection
+      user: debug@localdomain.test
+      # Password for store connection
+      #[password]
+      password: ${decrypt:}
+      # show debug output for connection
+      debug: "true"
+      # Additional properties for store connection,
+      # see https://javaee.github.io/javamail/docs/api/com/sun/mail/imap/package-summary.html
+      properties:
+        mail:
+          imaps:
+            ssl:
+              checkserveridentity: "false"
               trust: "*"
             auth:
               # only set below credential when you go with oauth2
               mechanisms: XOAUTH2
             sasl:
-              enable: true
+              enable: "true"
               mechanisms: XOAUTH2
       userPasswordProvider: com.axonivy.connector.oauth.AzureOauth2UserPasswordProvider
       # only set below credential when you go with oauth2
@@ -112,7 +130,6 @@ Variables:
       secretKey: ""
       # for client_credentials/password: https://outlook.office365.com/.default
       scope: ""
-      #[client_credentials, password]
       grantType: ""
   # login microsoft azure
   azureOAuth:

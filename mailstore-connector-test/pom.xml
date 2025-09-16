@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.axonivy.ivy.api</groupId>
     <artifactId>ivy-project-parent</artifactId>
     <version>13.1.1</version>
-    <relativePath />
+    <relativePath></relativePath>
   </parent>
   <groupId>com.axonivy.connector.mailstore</groupId>
   <artifactId>mailstore-connector-test</artifactId>
   <version>13.1.2-SNAPSHOT</version>
   <packaging>iar</packaging>
+  
+  <properties>
+    <testcontainers.version>1.21.3</testcontainers.version>
+  </properties>
+  
   <dependencies>
     <dependency>
       <groupId>com.axonivy.connector.mailstore</groupId>
@@ -26,6 +32,30 @@
     <dependency>
       <groupId>com.axonivy.ivy.api</groupId>
       <artifactId>ivy-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.axonivy.connector.mailstore</groupId>
+      <artifactId>mailstore-connector-demo</artifactId>
+      <version>${project.version}</version>
+      <type>iar</type>
+    </dependency>
+        <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   <repositories>
