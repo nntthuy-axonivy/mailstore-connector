@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.axonivy.connector.mailstore</groupId>
   <artifactId>mailstore-connector-test</artifactId>
@@ -9,6 +10,7 @@
     <project.build.plugin.version>12.0.0</project.build.plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tester.version>12.0.1</tester.version>
+    <testcontainers.version>1.21.3</testcontainers.version>
   </properties>
   <pluginRepositories>
     <!-- Snapshot releases are available via sonatype.org -->
@@ -29,10 +31,11 @@
       </snapshots>
     </repository>
   </repositories>
+
   <dependencies>
     <dependency>
       <groupId>com.axonivy.connector.mailstore</groupId>
-      <artifactId>mailstore-connector</artifactId>
+      <artifactId>mailstore-connector-demo</artifactId>
       <version>${project.version}</version>
       <type>iar</type>
     </dependency>
@@ -41,6 +44,24 @@
       <artifactId>unit-tester</artifactId>
       <version>${tester.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   <build>
