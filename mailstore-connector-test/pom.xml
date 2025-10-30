@@ -9,7 +9,7 @@
   </parent>
   <groupId>com.axonivy.connector.mailstore</groupId>
   <artifactId>mailstore-connector-test</artifactId>
-  <version>13.1.3-SNAPSHOT</version>
+  <version>13.1.4-SNAPSHOT</version>
   <packaging>iar</packaging>
   
   <properties>
