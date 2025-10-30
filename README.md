@@ -4,6 +4,6 @@
 
 Connect to IMAP and POP3 mail stores.
 
-This connector provides basic functionality to easily connect to IMAP or POP3 stores, optionally using SSL. It makes it easy to write jobs that work on emails filtered by flexible predicates and to delete or move the messages after successful handling. Additionally it provides convenience functions to extract certain parts (texts, images,...) out of emails.
+This connector provides basic functionality for connecting to IMAP or POP3 mail stores, with optional SSL support. It simplifies the implementation of jobs that process emails based on flexible filtering predicates, and supports actions such as deleting or moving messages after successful processing. Additionally, it offers convenient utilities for extracting specific parts of an email, such as plain text, HTML content, or attachments like images.
 
 Read our [documentation](mailstore-connector-product/README.md).
