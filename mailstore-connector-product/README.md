@@ -10,33 +10,69 @@ Please be aware that the comprehensive feature set is exclusively accessible thr
 
 ## Demo
 
-Two demo processes are provided, which do the same thing once in an Ivy sub-process and once directly in a Java service function if you prefer. Both read from an IMAP inbox (for testing you can use a docker image like [virtua-sa/docker-mail-devel](https://github.com/virtua-sa/docker-mail-devel) or a public IMAP service like [Ethereal](https://ethereal.email/) and any IMAP mail client like [Thunderbird](https://www.thunderbird.net/de/).
+Two demo processes are provided:
 
-The demo will read from the standard inbox messages containing the text `Test 999...` where 999 is a number. For every message it will save the message to a case document, extract all image parts and logs some information about them. So to see results, you should prepare such mails in the inbox. Messaages will not be deleted or moved to simplify testing.
+- One implemented as an **Ivy sub-process**
+- One implemented as a **Java service function**
 
-Results will only be written to the Ivy logfile. In a later version, there will be perhaps a little GUI for this. Stay tuned!
+> Both perform the same task – choose whichever integration style fits your needs.
+
+Both demos connect to an **IMAP inbox**.
+
+For testing purposes, you can use:
+
+- A Docker container such as [`virtua-sa/docker-mail-devel`](https://github.com/virtua-sa/docker-mail-devel)
+- A public IMAP testing service like [Ethereal](https://ethereal.email/)
+- Any IMAP-capable client such as [Thunderbird](https://www.thunderbird.net/de/)
+
+The demo reads messages from the standard inbox that contain the text: `Test 999` (where `999` is any number).
+
+For each matching message, it:
+
+- Saves the message as a **case document**
+- Extracts all **image parts**
+- Logs relevant metadata to the **Ivy log**
+
+> To test it, prepare such messages in the inbox.  
+> Messages are **not deleted or moved**, to keep testing repeatable and safe.
+
+### 📝 Output & Outlook
+
+- All output is written to the **Ivy log**.
+- A simple GUI might be added in a future version — stay tuned!
+
 
 ## Usage
 
 ### From Java or Ivy Script
 
-Use `com.axonivy.connector.mailstore.MailStoreService.messageIterator(String, String, String, boolean, Predicate<Message>, Comparator<Message>)` to get an interator to new mails in a folder on a mail store. You can then iterate through the "new" mails in this folder dependeing on the given flags. If a destination folder is set, then mails which were handled successfully will be moved there. If the delete flag is set, then mails which were handled successfully will be deleted from the source folder.
+1. Use `com.axonivy.connector.mailstore.MailStoreService.messageIterator(String, String, String, boolean, Predicate<Message>, Comparator<Message>)` to obtain an iterator over new emails in a specific folder of a mail store. You can then iterate through these messages based on the provided filter and configuration flags.
+  - If a **destination folder** is specified, messages that are successfully handled will be **moved** there.
+  - If the **delete flag** is set, successfully handled messages will be **deleted** from the source folder instead.
 
-A filter can be defined to match only specific mails. Standard filters to filter for parts of the subject, sender, recipients,... are provided directly but filters follow the standard Java `Predicate<Message>` interface and can be easily defined and combined with existing Java functionality (like `Predicate.and` or `Predicate.or`).
 
-Similar to filter, the sort follows the standard Java `Comparator<Message>` interface and can sort sent date, received date, subject,...
+2. A filter can be defined to match only specific messages. Standard filters are provided to match parts of the **subject**, **sender**, **recipients**, and more.  
+  - Filters are based on the standard Java `Predicate<Message>` interface and can be easily defined and combined using standard Java functionality such as `Predicate.and(...)` or `Predicate.or(...)`.
 
-A typical call reading mails with a certain subject `Request 12345` from the `inbox` and moving then to an `archive` after successfull handling would be created like this:
+
+3. Similar to filter, the sort follows the standard Java `Comparator<Message>` interface and can sort sent date, received date, subject,...
+
+4. A typical call that reads emails with a specific subject like `Request 12345` from the `inbox` folder and moves them to an `archive` folder after successful processing can be written as follows:
+
 
 ```java
 MessageIteraor it = MailsStoreService.messageIterator("etherealImaps", "INBOX", "archive", true, MailStoreService.subjectMatches(".*Request [0-9]+.*"), new MessageComparator())
 ```
 
-When you are finished handling an Email successfully, you should call the `handledMessage(boolean)` function, so the iterator will perform the configured action for this Email. Not calling this function or calling this function with `false` will leave the Email in the store and it will be delivered in the next run.
+When you have successfully handled an email, you should call the `handledMessage(boolean)` function.  
+This informs the iterator to perform the configured action (e.g., move or delete) for that message.
+
+If you do **not** call this function, or if you call it with `false`, the message will remain in the store and will be delivered again during the next run.
+
 
 ### As a sub-process
 
-All Email-handling can also be performed calling the provided sub-process `MailStoreConnector.handleMessages` and overriding the process to handle a single Email `MessageHandler.handleMessage`. Handling of mails will be marked as successful, when the overridden process returns with `handled=true` (and does not throw an error).
+All Email-handling can also be performed calling the provided sub-process `MailStoreConnector.handleMessages` and overriding the process to handle a single email `MessageHandler.handleMessage`. Handling of emails will be marked as successful, when the overridden process returns with `handled=true` (and does not throw an error).
 
 ### Message handling
 
@@ -62,8 +98,9 @@ for a mailstore that should be accessible under the name `etherealImaps`. Put th
 project. At least `protocol`, `host`, `user` and `password` must be defined (note the encrypted `password`
 and the value list for `protocol` which will later provide some input support in the engine cockpit).
 
-If you want to see connect logs, use the `debug` switch. If your connection requires special settings, you
-can set them in the `properties` section.
+If you want to see connection logs, enable the `debug` switch.  
+If your connection requires special settings, you can define them in the `properties` section.
+
 
 ```yaml
 Variables:
